@@ -1,23 +1,23 @@
-package updateUsers
+package findAllUsers
 
 import (
 	"context"
 	"fmt"
+	"gin-api/domain/dtos/pagination"
 	"gin-api/domain/exceptions/http_exceptions"
 	"gin-api/domain/types/apiErros"
-	"gin-api/src/user/dtos/updateUserDto"
 	"gin-api/src/user/models"
 	userRepositories "gin-api/src/user/repositories"
 	"github.com/gin-gonic/gin"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"net/http"
 )
 
-func UpdateUsers(c *gin.Context, mongoUser userRepositories.UserRepository, userUpdate updateUserDto.UpdateUsersDto, id primitive.ObjectID) {
+func FindAllUsers(c *gin.Context, mongoUser userRepositories.UserRepository, pag pagination.Pagination) {
 	apiError := apiErros.NewApiError()
 
 	// Call the usecase function, pass the user data
-	updatedUser, err := mongoUser.Update(context.Background(), userUpdate, id)
+	users, err := mongoUser.FindMany(context.Background(), pag.Page, pag.Limit)
+	responseData := models.ResponseUsers(users)
 
 	// show error from database
 	if err != nil {
@@ -30,6 +30,6 @@ func UpdateUsers(c *gin.Context, mongoUser userRepositories.UserRepository, user
 		return
 	}
 
-	// return the user updated
-	c.JSON(http.StatusOK, models.ResponseUser(updatedUser))
+	// return the user created
+	c.JSON(http.StatusOK, pag.PaginatedInfo(responseData))
 }

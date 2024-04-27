@@ -6,7 +6,7 @@ import (
 	"gin-api/src/auth/middleware"
 	"gin-api/src/user/dtos/createUserDto"
 	"gin-api/src/user/dtos/updateUserDto"
-	"gin-api/src/user/repositories"
+	userRepositories "gin-api/src/user/repositories"
 	"gin-api/src/user/usecases/createUsers"
 	"gin-api/src/user/usecases/findAllUsers"
 	"gin-api/src/user/usecases/findUsers"

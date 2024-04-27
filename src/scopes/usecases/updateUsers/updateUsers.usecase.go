@@ -7,7 +7,7 @@ import (
 	"gin-api/domain/types/apiErros"
 	"gin-api/src/user/dtos/updateUserDto"
 	"gin-api/src/user/models"
-	userRepositories "gin-api/src/user/repositories"
+	"gin-api/src/user/repositories"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"net/http"

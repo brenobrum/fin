@@ -3,7 +3,7 @@ package findUsers
 import (
 	"context"
 	"gin-api/src/user/models"
-	userRepositories "gin-api/src/user/repositories"
+	"gin-api/src/user/repositories"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"net/http"

@@ -5,7 +5,9 @@ import (
 	"gin-api/infra/config"
 	auth "gin-api/src/auth/routes"
 	healthCheck "gin-api/src/healthCheck/routes"
+	scopes "gin-api/src/scopes/routes"
 	user "gin-api/src/user/routes"
+
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
@@ -27,11 +29,12 @@ func main() {
 
 	config.SetupEnv()
 	mongoClient := config.ConnectMongoDB()
+	config.Seed(mongoClient)
 
 	healthCheck.SetupHealthCheck(router)
 	auth.SetupAuthRoutes(router, mongoClient)
 	user.SetupUserRoutes(router, mongoClient)
-
+	scopes.SetupScopeRoutes(router, mongoClient)
 	// Start serving the application
 	router.Run() // default listens and serves on 0.0.0.0:8080
 }
