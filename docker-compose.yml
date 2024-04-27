@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  api:
+    image: ${DOCKER_REGISTRY-}golang-project-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      MONGO_URI: "mongodb://mongodb:27017"
+      MONGO_DATABASE: "develop"
+    depends_on:
+      - mongodb
+    networks:
+      - network1
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_URI: "mongodb://mongodb:27017"
+      MONGO_DATABASE: "develop"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - network1
+
+networks:
+  network1:
+
+volumes:
+  mongodb_data:
