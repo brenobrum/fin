@@ -1,8 +1,10 @@
 package apiErros
 
 import (
+	"gin-api/domain/exceptions/http_exceptions"
 	"gin-api/domain/types/apiErros/exceptions"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 type ApiError struct {
@@ -34,7 +36,7 @@ func (e *ApiError) Throw() gin.H {
 		ginError["errors"] = e.Errors
 	}
 	if e.DetailedError != nil {
-		ginError["detailedError"] = e.Errors
+		ginError["detailedError"] = e.DetailedError
 	}
 
 	return ginError
@@ -65,6 +67,28 @@ func (e *ApiError) SetError(key string, error ErrorMessage) {
 func (e *ApiError) HasErrors() bool {
 	// validates erros length
 	if e.Errors != nil && len(*e.Errors) != 0 {
+		return true
+	}
+
+	return false
+}
+
+func (e *ApiError) InternalServerError(c *gin.Context, err error) bool {
+	if err != nil {
+		e.SetMessage(http_exceptions.INTERNAL_SERVER_ERROR)
+		e.SetCode(http_exceptions.INTERNAL_SERVER_ERROR_CODE)
+		e.SetDatailedError(err.Error())
+
+		c.JSON(http.StatusInternalServerError, e.Throw())
+		return true
+	}
+
+	return false
+}
+
+func (e *ApiError) NoDocument(c *gin.Context, err error) bool {
+	if err != nil && err.Error() == "mongo: no documents in result" {
+		c.Status(http.StatusNotFound)
 		return true
 	}
 

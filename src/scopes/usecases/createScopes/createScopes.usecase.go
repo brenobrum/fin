@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"gin-api/domain/exceptions/http_exceptions"
 	"gin-api/domain/types/apiErros"
-	createScopesDto "gin-api/src/scopes/dtos/createUserDto"
+	createScopesDto "gin-api/src/scopes/dtos/createScopesDto"
 	scopeRepositories "gin-api/src/scopes/repositories"
 	"github.com/gin-gonic/gin"
 	"net/http"

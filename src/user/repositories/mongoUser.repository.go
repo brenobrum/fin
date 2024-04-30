@@ -25,7 +25,9 @@ func NewMongoUserRepository(collection *mongo.Collection) *MongoUserRepository {
 }
 
 func (r *MongoUserRepository) Create(ctx context.Context, user createUserDto.CreateUsersDto) (*models.User, error) {
-	hashBytes, err := bcrypt.GenerateFromPassword([]byte(user.Password), 14)
+
+	// higher the cost, higher the time to process the request
+	hashBytes, err := bcrypt.GenerateFromPassword([]byte(user.Password), 9)
 	if err != nil {
 		fmt.Println("cant genarate hash")
 	}
